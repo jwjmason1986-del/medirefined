@@ -1,0 +1,13 @@
+# Single-package "workspace" — exists so pnpm records build approvals here
+# (pnpm 12 asks you to approve each dependency build script via `allowBuilds`).
+packages:
+  - .
+
+allowBuilds:
+  "@parcel/watcher": true
+  better-sqlite3: true
+  esbuild: true
+  oxc-parser: true
+  sharp: true
+  unrs-resolver: true
+  vue-demi: true

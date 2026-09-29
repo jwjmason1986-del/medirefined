@@ -1,0 +1,38 @@
+# Local dev stack: the Nuxt dev server + Mailpit (catches the booking-form emails).
+#   Site     http://localhost:3600
+#   Mailpit  http://localhost:8027
+services:
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: medirefined-mailpit
+    ports:
+      - "8027:8025"
+      - "1027:1025"
+    restart: unless-stopped
+
+  web:
+    build: .
+    container_name: medirefined
+    depends_on:
+      - mailpit
+    ports:
+      - "3600:3600"
+    environment:
+      - NODE_ENV=development
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3600
+      - NUXT_SITE_URL=${NUXT_SITE_URL:-http://localhost:3600}
+      - NUXT_PUBLIC_SITE_INDEXABLE=${NUXT_PUBLIC_SITE_INDEXABLE:-false}
+      - NUXT_SMTP_HOST=${NUXT_SMTP_HOST:-mailpit}
+      - NUXT_SMTP_PORT=${NUXT_SMTP_PORT:-1025}
+      - NUXT_MAIL_FROM=${NUXT_MAIL_FROM:-MediRefined <noreply@medirefined.test>}
+      - NUXT_FORM_NOTIFY=${NUXT_FORM_NOTIFY:-clinic@medirefined.test}
+    volumes:
+      - .:/app
+      - medirefined_node_modules:/app/node_modules
+      - medirefined_nuxt:/app/.nuxt
+    restart: unless-stopped
+
+volumes:
+  medirefined_node_modules:
+  medirefined_nuxt:
