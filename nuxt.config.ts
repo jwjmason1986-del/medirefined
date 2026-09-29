@@ -9,6 +9,9 @@ const telephone = real(contact.phone)
 const email = real(contact.email)
 const streetAddress = real(contact.address)
 
+// '/' on Coolify, '/medirefined/' for the GitHub Pages build (set by .github/workflows/pages.yml).
+const base = process.env.NUXT_APP_BASE_URL || '/'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
@@ -25,6 +28,10 @@ export default defineNuxtConfig({
     smtpPass: '',
     mailFrom: '',
     formNotify: '',
+    public: {
+      // true only for the static GitHub Pages build (no server → the booking form hands off to WhatsApp instead).
+      staticSite: false,
+    },
   },
 
   routeRules: {
@@ -50,7 +57,9 @@ export default defineNuxtConfig({
   // Light only (the design has no dark theme).
   colorMode: { preference: 'light', fallback: 'light', classSuffix: '', storageKey: 'mr-color-mode' },
 
-  robots: { groups: [{ userAgent: ['*'], disallow: ['/api/'] }] },
+  // robots.txt only means anything at a domain root, so it's skipped for the /medirefined/ GitHub Pages build (the
+  // noindex meta tag still applies there).
+  robots: { robotsTxt: base === '/', groups: [{ userAgent: ['*'], disallow: ['/api/'] }] },
   ogImage: { enabled: false }, // static /og/home.jpg instead
   seo: { canonicalLowercase: false },
 
@@ -93,9 +102,9 @@ export default defineNuxtConfig({
       // Declared here (not in app.vue) so nuxt-seo-utils doesn't also inject un-versioned copies.
       // Bump ?v= whenever the icon changes — browsers cache favicons hard.
       link: [
-        { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/favicon-48.png?v=2' },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png?v=2' },
-        { rel: 'manifest', href: '/site.webmanifest?v=2' },
+        { rel: 'icon', type: 'image/png', sizes: '48x48', href: `${base}favicon-48.png?v=2` },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: `${base}apple-touch-icon.png?v=2` },
+        { rel: 'manifest', href: `${base}site.webmanifest?v=2` },
       ],
     },
   },

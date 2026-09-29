@@ -41,3 +41,16 @@ SEO is already set up and verified (Lighthouse 100/100/100 in live mode). To lau
 5. **After deploy:**
    - Add the domain to Google Search Console and submit `/sitemap.xml`.
    - Check the page with Google's Rich Results Test (FAQPage / LocalBusiness).
+
+## GitHub Pages (preview copy)
+- `.github/workflows/pages.yml` builds a **static** copy on every push to `main` (`pnpm generate`, base
+  `/medirefined/`) and deploys it to https://jwjmason1986-del.github.io/medirefined/.
+- It needs **Settings → Pages → Source = "GitHub Actions"**, which needs repo admin.
+- On Pages there is no server, so `NUXT_PUBLIC_STATIC_SITE=true` makes the booking form hand off to WhatsApp instead
+  of emailing, and robots.txt is skipped (it's meaningless on a sub-path).
+- The Pages copy is always noindex, so it never competes with the real domain.
+- The real site (with email) is the Coolify deploy of `Dockerfile.prod`.
+- To test the Pages build locally, run:
+  `docker compose exec -e NUXT_APP_BASE_URL=/medirefined/ -e NUXT_SITE_URL=https://jwjmason1986-del.github.io -e NUXT_PUBLIC_STATIC_SITE=true -e NITRO_PRESET=github_pages web pnpm generate`,
+  then serve `.output/public` under a `/medirefined/` folder.
+- Every public asset in templates must go through `asset('/…')` (`app/utils/asset.ts`), or it 404s under the sub-path.

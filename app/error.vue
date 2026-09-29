@@ -16,7 +16,7 @@ useSeoMeta({ title: is404.value ? 'Page not found | MediRefined' : 'Something we
           <p class="max-w-[520px] text-lg text-muted">
             {{ is404 ? 'The page you were looking for has moved or no longer exists.' : 'Please try again in a moment.' }}
           </p>
-          <a href="/" class="pill pill--solid pill--lg" @click.prevent="clearError({ redirect: '/' })">Back to home</a>
+          <a :href="asset('/')" class="pill pill--solid pill--lg" @click.prevent="clearError({ redirect: '/' })">Back to home</a>
         </div>
       </section>
     </NuxtLayout>

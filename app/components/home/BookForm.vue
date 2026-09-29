@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { booking, TIMES, TREATMENTS } from '#shared/site'
+import { booking, TIMES, TREATMENTS, whatsapp } from '#shared/site'
 import { emptyBooking, isoToday, validateBooking } from '#shared/booking'
 import type { BookingErrors, BookingField } from '#shared/booking'
 
@@ -37,6 +37,21 @@ async function submit() {
   errors.value = e
   if (Object.keys(e).length) {
     focusFirstError()
+    return
+  }
+  // Static build (GitHub Pages): no API to post to, so hand the request to WhatsApp, pre-filled.
+  if (useRuntimeConfig().public.staticSite) {
+    const lines = [
+      `Hi MediRefined, I would like to request a consultation.`,
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      form.phone ? `Phone: ${form.phone}` : '',
+      `Treatment: ${form.treatment}`,
+      `Preferred date: ${form.date} (${form.time})`,
+      form.message ? `Note: ${form.message}` : '',
+    ].filter(Boolean)
+    window.open(`https://wa.me/${whatsapp.number}?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener')
+    statusText.value = booking.whatsappHandoff
     return
   }
   state.value = 'sending'
@@ -156,7 +171,7 @@ const err = (f: BookingField) => (errors.value[f] ? `${ids[f]}-err` : undefined)
           <button class="book__submit" type="submit" :disabled="!ready || state === 'sending'">
             {{ state === 'sending' ? 'Sending…' : 'Request consultation' }}
           </button>
-          <p v-if="statusText" class="book__status" role="alert">{{ statusText }}</p>
+          <p v-if="statusText" class="book__status" :class="{ 'is-info': state !== 'error' }" role="alert">{{ statusText }}</p>
         </form>
       </div>
     </div>
@@ -282,6 +297,10 @@ textarea:focus {
   font-size: 13px;
   font-weight: 500;
   color: #a3283a;
+}
+
+.book__status.is-info {
+  color: var(--color-navy);
 }
 
 .hp {

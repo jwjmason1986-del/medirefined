@@ -12,7 +12,7 @@ export function usePageSeo(o: PageSeo) {
     description: o.description,
     ogTitle: o.title,
     ogDescription: o.description,
-    ogImage: `${siteUrl}/og/${o.og}.jpg`,
+    ogImage: `${siteUrl.replace(/\/+$/, '')}${asset(`/og/${o.og}.jpg`)}`,
     ogImageAlt: o.title,
     ogImageWidth: 1200,
     ogImageHeight: 630,

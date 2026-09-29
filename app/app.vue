@@ -11,7 +11,7 @@ useSeoMeta({
   description: site.description,
   ogType: 'website',
   ogSiteName: site.name,
-  ogImage: `${siteUrl}/og/home.jpg`,
+  ogImage: `${siteUrl.replace(/\/+$/, '')}${asset('/og/home.jpg')}`,
   ogImageAlt: `${site.name} — Botox and dermal filler consultations`,
   ogImageWidth: 1200,
   ogImageHeight: 630,

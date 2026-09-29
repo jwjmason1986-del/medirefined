@@ -1,5 +1,16 @@
 # Build log
 
+## 2026-09-30: published to GitHub + Pages build
+- The app now replaces the static site on `main` of github.com/jwjmason1986-del/medirefined. The old static-site
+  history is kept via a `-s ours` merge, not a force-push.
+- GitHub Pages was live from `main`, so a static Pages build was added (`.github/workflows/pages.yml`):
+  - The site works under a base URL: the `asset()` helper, base-aware favicon/manifest links, and OG image URLs built
+    from the site URL + base.
+  - The booking form hands off to WhatsApp on the static build.
+  - robots.txt is off on the sub-path.
+- It was verified locally: every URL under `/medirefined/`, no broken images, all fonts load, and the WhatsApp handoff
+  works.
+
 ## 2026-09-30: pre-launch Nuxt + SEO audit
 - **Schema fix:** the identity's `logo`/`image` were built from the placeholder `site.url` at build time. They're now
   root-relative strings (`image` must be a string, not an array, or nuxt-schema-org leaves it relative), so they

@@ -188,6 +188,8 @@ export const booking = {
   successBody: 'We will be in touch to confirm your time.',
   again: 'Send another request',
   error: 'Your request was not sent. Check your connection and try again.',
+  // Static (GitHub Pages) build only: there is no server to email from, so the request opens in WhatsApp instead.
+  whatsappHandoff: 'WhatsApp should open with your request ready to send. If it does not, message us on WhatsApp.',
 }
 
 export const contact = {

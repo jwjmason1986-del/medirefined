@@ -18,10 +18,10 @@ import { hero } from '#shared/site'
         <picture>
           <source
             type="image/webp"
-            srcset="/images/medirefined-logo-520.webp 520w, /images/medirefined-logo-1000.webp 1000w"
+            :srcset="`${asset('/images/medirefined-logo-520.webp')} 520w, ${asset('/images/medirefined-logo-1000.webp')} 1000w`"
             sizes="(min-width: 700px) 520px, 340px"
           >
-          <img src="/images/medirefined-logo.png" alt="MediRefined" width="1000" height="626" fetchpriority="high">
+          <img :src="asset('/images/medirefined-logo.png')" alt="MediRefined" width="1000" height="626" fetchpriority="high">
         </picture>
       </div>
     </div>

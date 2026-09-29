@@ -30,8 +30,8 @@ const active = ref(0)
       <div class="areas__grid">
         <div class="areas__photo">
           <picture>
-            <source type="image/webp" :srcset="areas.imageWebp">
-            <img :src="areas.image" :alt="areas.imageAlt" width="686" height="686" loading="lazy" decoding="async">
+            <source type="image/webp" :srcset="asset(areas.imageWebp)">
+            <img :src="asset(areas.image)" :alt="areas.imageAlt" width="686" height="686" loading="lazy" decoding="async">
           </picture>
           <!-- Pointer shortcut; the segmented control above is the keyboard / screen-reader path. -->
           <button
