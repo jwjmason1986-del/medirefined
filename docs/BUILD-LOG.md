@@ -1,5 +1,8 @@
 # Build log
 
+## 2026-09-30: favicon on navy
+- The app icons (favicon, apple-touch and 192/512) are now the gold face-profile line on a navy #231d6f tile with a fine gold ring, cropped so no script-letter fragments show. The cache version was bumped to `?v=2`.
+
 ## 2026-09-30: v2, redesign from `design_handoff_medirefined_home`
 - Rebuilt every section to the hi-fi handoff:
   - New palette: navy #231d6f and gold #a8895f on white, cream and beige bands.

@@ -5,15 +5,16 @@ import { writeFile } from 'node:fs/promises'
 import sharp from 'sharp'
 
 const PAPER = { r: 249, g: 247, b: 241, alpha: 1 }
-const GOLD = '#B9A487'
+const GOLD = '#A8895F'
+const NAVY = '#231D6F'
 
-// Icon: the face-profile line from logo-mark.png (right-hand part of the artwork), on paper, in a gold ring.
+// Icon: the face-profile line from the logo (right-hand part of the artwork), gold on a navy tile with a fine gold ring.
 async function icon(size) {
   const face = await sharp('public/images/medirefined-logo.png')
-    .extract({ left: 420, top: 200, width: 260, height: 420 })
+    .extract({ left: 440, top: 276, width: 220, height: 336 })
     .resize({ height: Math.round(size * 0.72), fit: 'inside' })
     .toBuffer()
-  const ring = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="100%" height="100%" rx="${size * 0.22}" fill="#F9F7F1"/><rect x="${size * 0.05}" y="${size * 0.05}" width="${size * 0.9}" height="${size * 0.9}" rx="${size * 0.18}" fill="none" stroke="${GOLD}" stroke-width="${Math.max(1.5, size * 0.03)}"/></svg>`)
+  const ring = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="100%" height="100%" rx="${size * 0.22}" fill="${NAVY}"/><rect x="${size * 0.05}" y="${size * 0.05}" width="${size * 0.9}" height="${size * 0.9}" rx="${size * 0.18}" fill="none" stroke="${GOLD}" stroke-width="${Math.max(1.5, size * 0.03)}"/></svg>`)
   return sharp(ring).composite([{ input: face, gravity: 'center' }]).png().toBuffer()
 }
 
