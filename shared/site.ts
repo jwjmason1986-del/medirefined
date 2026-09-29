@@ -69,7 +69,7 @@ export const areas = {
       label: 'Forehead and frown lines', treatment: 'Botox', x: 50, y: 31,
       desc: [
         'Botox relaxes the muscles that crease the forehead and the space between the brows, softening frown and forehead lines.',
-        'Doses are kept conservative, so you can still raise your brows and look expressive, just less tired. It pairs well with crow\'s feet.',
+        'Doses are kept conservative, so you can still raise your brows and look expressive, just less tired. It pairs well with crow\'s feet, and a review at 2 weeks allows small top-ups.',
       ],
       facts: [['Results', '3 to 7 days, settling at 2 weeks'], ['Lasts', 'Typically 3 to 4 months']],
     },
@@ -77,7 +77,7 @@ export const areas = {
       label: 'Crow\'s feet', treatment: 'Botox', x: 66, y: 46,
       desc: [
         'Small amounts of Botox at the outer corners of the eyes soften the fine lines that appear when you smile, laugh or squint.',
-        'The aim is a smoother, more rested look while your smile stays warm and natural. This area is often treated alongside frown lines.',
+        'The aim is a smoother, more rested look while your smile stays warm and natural. This area is often treated alongside frown lines for a balanced, refreshed upper face.',
       ],
       facts: [['Results', '3 to 7 days, settling at 2 weeks'], ['Lasts', 'Typically 3 to 4 months']],
     },
@@ -85,7 +85,7 @@ export const areas = {
       label: 'Cheeks', treatment: 'Dermal fillers', x: 36, y: 56,
       desc: [
         'Hyaluronic acid filler restores volume in the mid-face, lifting and supporting the cheeks for a fresher, natural shape.',
-        'Support here can also soften the folds beside the nose and mouth, so a little volume in the cheeks can refresh the whole face.',
+        'Support here can also soften the folds beside the nose and mouth, so a little volume in the cheeks can refresh the whole face without looking obviously done.',
       ],
       facts: [['Results', 'Immediately, settling over a few days'], ['Lasts', 'Often 12 months or more']],
     },
@@ -93,7 +93,7 @@ export const areas = {
       label: 'Lips', treatment: 'Dermal fillers', x: 50, y: 67,
       desc: [
         'Filler can add subtle volume, define the lip border and improve symmetry. The aim is a natural balance, never extra size.',
-        'Small amounts are placed carefully and built up gradually. Lips may look swollen for a few days, and filler can be dissolved if needed.',
+        'Small amounts are placed carefully and built up gradually over one or more visits. Lips may look swollen for a few days, and filler can be dissolved if needed.',
       ],
       facts: [['Results', 'Immediately, settling over a few days'], ['Lasts', 'Around 6 to 12 months']],
     },
@@ -101,7 +101,7 @@ export const areas = {
       label: 'Chin and jawline', treatment: 'Dermal fillers', x: 57, y: 76,
       desc: [
         'Filler along the chin and jaw gently adds structure and definition, improving the profile and the line from ear to chin.',
-        'It can bring the lower face into better proportion without surgery, balancing a softer chin or a less defined jawline.',
+        'It can bring the lower face into better proportion without surgery, balancing a softer chin or a less defined jawline and sharpening the profile from the side.',
       ],
       facts: [['Results', 'Immediately, settling over a few days'], ['Lasts', 'Often 12 months or more']],
     },
@@ -144,11 +144,14 @@ export const safety = {
 export const reviews = {
   title: 'Kind words',
   intro: 'What it feels like to be looked after at MediRefined.',
-  // sample: true → shows the "replace with real client reviews" note. Remove once real reviews are in.
+  // ⚠️ SAMPLE REVIEWS: realistic-looking placeholders for the design only. Publishing invented testimonials is illegal
+  // in the UK (DMCC Act 2024, CAP code). While any item has sample: true, <HomeReviews> (and the nav link) are hidden
+  // automatically once the site is indexable (NUXT_PUBLIC_SITE_INDEXABLE=true). Replace with genuine, attributable
+  // client reviews (with their consent) and set sample: false.
   items: [
-    { quote: 'I felt listened to from the first minute. The plan was clear, and the results look like me, only rested.', who: 'Client name, Botox', sample: true },
-    { quote: 'Everything was explained honestly, including what I did not need. I left feeling confident, not pressured.', who: 'Client name, Dermal fillers', sample: true },
-    { quote: 'Calm, professional and discreet. I would happily recommend a consultation to anyone unsure where to start.', who: 'Client name, Consultation', sample: true },
+    { quote: 'I felt listened to from the first minute. The plan was clear, and the results look like me, only rested.', name: 'Sophie T.', treatment: 'Botox, forehead and frown lines', rating: 5, sample: true },
+    { quote: 'Everything was explained honestly, including what I did not need. I left feeling confident, not pressured.', name: 'Rachel K.', treatment: 'Dermal fillers, lips', rating: 5, sample: true },
+    { quote: 'Calm, professional and discreet. I would happily recommend a consultation to anyone unsure where to start.', name: 'Amanda L.', treatment: 'Consultation', rating: 5, sample: true },
   ],
 }
 

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { nav } from '#shared/site'
+import { nav as allNav } from '#shared/site'
+
+const showReviews = useShowReviews()
+const nav = computed(() => allNav.filter(l => showReviews.value || l.href !== '#reviews'))
 
 // Sticky 52px translucent nav (handoff §1). The link row shows from 900px; below that a menu button opens
 // <SiteMobileMenu>. The "Book" pill is always visible.

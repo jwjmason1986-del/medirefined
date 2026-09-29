@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { nav } from '#shared/site'
+import { nav as allNav } from '#shared/site'
+
+const showReviews = useShowReviews()
+const nav = computed(() => allNav.filter(l => showReviews.value || l.href !== '#reviews'))
 
 // Drop-down menu below the nav for widths under 900px. Teleported to <body>: the nav's backdrop-filter would
 // otherwise become the containing block of this fixed panel. Esc / backdrop / link click close it; <html> scroll locks.

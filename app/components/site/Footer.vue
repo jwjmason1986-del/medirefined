@@ -55,15 +55,9 @@ const year = new Date().getFullYear()
 }
 
 .site-footer__mark {
-  font-family: var(--font-sans);
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  /* Same wordmark as the nav (Cormorant "Medi" + Pinyon Script "Refined"), a touch larger; white on navy. */
+  font-size: 22px;
   color: #fff;
-}
-
-.site-footer__mark span {
-  letter-spacing: 0;
 }
 
 .site-footer__tag {

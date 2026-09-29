@@ -27,6 +27,8 @@ Each component carries its own scoped CSS, ported from the handoff's inline styl
 - **Areas:** the photo panel is `aspect-ratio: 1` over the square `face.jpg`, so the %-positioned markers line up.
   If a non-square portrait is supplied, re-tune `areas.items` x/y (or keep the square crop). The segmented control is
   the accessible path; the markers are `aria-hidden`.
+- **Reviews:** `shared/site.ts` reviews carry `sample: true`. `useShowReviews()` hides `HomeReviews` and the nav
+  link whenever the site is indexable while any sample remains. Never remove that guard to "make reviews show".
 - **FAQ:** one row open at a time. Answers use `v-show`, so they stay in the DOM for crawlers and the FAQPage schema.
 - **Booking form:**
   - `method="post"` and a submit button disabled until hydration mean personal data can never end up in a URL.

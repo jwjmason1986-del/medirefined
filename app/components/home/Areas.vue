@@ -45,8 +45,8 @@ const active = ref(0)
         </div>
 
         <div class="areas__card">
-          <!-- All five texts share one grid cell (only the active one visible), so the card is always the height of
-               the longest and never jumps when switching areas. -->
+          <!-- Side by side (≥1000px) all five texts share one grid cell, so the card never jumps when switching areas.
+               Stacked (<1000px) only the active one is laid out, so the card hugs its text. -->
           <div class="areas__text" aria-live="polite">
             <div
               v-for="(a, i) in areas.items"
@@ -200,7 +200,6 @@ const active = ref(0)
 
 .areas__badge {
   align-self: flex-start;
-  margin-bottom: auto;
   padding: 5px 11px;
   border-radius: 980px;
   background: var(--color-badge-bg);
@@ -212,7 +211,7 @@ const active = ref(0)
 }
 
 h3 {
-  margin-top: 28px;
+  margin-top: 20px;
   font-family: var(--font-serif);
   font-size: clamp(32px, 4vw, 44px);
   font-weight: 500;
@@ -230,7 +229,7 @@ h3 {
 }
 
 .areas__facts {
-  margin: 24px 0 0;
+  margin: auto 0 0; /* pinned to the card bottom; any spare height sits above it, not as an empty band */
   padding-top: 18px;
   border-top: 1px solid var(--color-line);
   display: grid;
@@ -287,12 +286,13 @@ h3 {
     max-width: 60ch;
   }
 
-  .areas__badge {
-    margin-bottom: 0;
+  /* Stacked: only the active entry takes space, so the card hugs its text (no spare height at all). */
+  .areas__entry:not(.on) {
+    display: none;
   }
 
-  .areas__entry {
-    justify-content: flex-start;
+  .areas__facts {
+    margin-top: 24px;
   }
 }
 

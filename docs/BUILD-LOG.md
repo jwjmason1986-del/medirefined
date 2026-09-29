@@ -1,5 +1,19 @@
 # Build log
 
+## 2026-09-30: fuller area cards, realistic sample reviews, footer wordmark
+- **Area cards:** the second paragraphs are longer and the badge spacer is gone.
+  - Side by side (1000px and up), the Results / Lasts row is pinned to the card bottom, so any slack sits above it
+    (under one line).
+  - Stacked, only the active entry is laid out, so the card hugs its text.
+- **Reviews:** they now look real, with gold 5-star rows, initials avatars, a name plus initial, and the treatment.
+  The on-page "Sample text" note is gone.
+  - ⚠️ They are still invented samples (`sample: true`). `useShowReviews()` hides the section and its nav link
+    whenever the site is indexable, so they can't go live by accident. This was verified by toggling
+    NUXT_PUBLIC_SITE_INDEXABLE.
+  - Genuine reviews, used with the clients' consent, are needed before launch. Fake testimonials are unlawful in the UK
+    (DMCC Act 2024, CAP code).
+- **Footer:** the wordmark now matches the header (Cormorant 500 "Medi" + Pinyon Script "Refined").
+
 ## 2026-09-30: fuller area cards
 - Each area card now has two paragraphs plus a Results / Lasts fact row, balanced so every area reads 3 + 3 lines at
   desktop. All five entries share one grid cell, so the card height never changes when you switch.
@@ -57,7 +71,7 @@
 
 ## Open TODOs (placeholders are visible on the page)
 - [ ] Practitioner name, profession/registration number and qualifications (`safety.practitioner`)
-- [ ] Real client reviews: replace the samples and set `sample: false`
+- [ ] **Launch blocker:** real client reviews, with consent. Replace the samples and set `sample: false`; until then the Reviews section auto-hides on the live site
 - [ ] Contact phone, email, address, opening hours and socials (`contact`)
 - [ ] The clinic's SMTP credentials and notification address
 - [ ] Production domain (`site.url`, `NUXT_SITE_URL`), Coolify deploy, DNS

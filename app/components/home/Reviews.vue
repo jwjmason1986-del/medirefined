@@ -1,20 +1,30 @@
 <script setup lang="ts">
 import { reviews } from '#shared/site'
+
+const show = useShowReviews() // sample reviews never render on the live (indexable) site
+const initials = (name: string) => name.split(/\s+/).map(p => p[0]).join('').replace('.', '')
 </script>
 
 <template>
-  <section id="reviews" class="section reviews">
+  <section v-if="show" id="reviews" class="section reviews">
     <div class="wrap">
       <h2 class="title reviews__title">{{ reviews.title }}</h2>
       <div class="rule" />
       <p class="reviews__intro">{{ reviews.intro }}</p>
       <div class="reviews__row">
-        <figure v-for="(r, i) in reviews.items" :key="i">
-          <span class="reviews__mark" aria-hidden="true">&ldquo;</span>
-          <blockquote>{{ r.quote }}</blockquote>
+        <figure v-for="r in reviews.items" :key="r.name">
+          <div class="reviews__stars" role="img" :aria-label="`Rated ${r.rating} out of 5`">
+            <svg v-for="n in 5" :key="n" viewBox="0 0 20 20" aria-hidden="true" :class="{ off: n > r.rating }">
+              <path d="M10 1.6l2.47 5.2 5.7.72-4.18 3.94 1.06 5.64L10 14.35 4.95 17.1l1.06-5.64L1.83 7.52l5.7-.72z" />
+            </svg>
+          </div>
+          <blockquote>&ldquo;{{ r.quote }}&rdquo;</blockquote>
           <figcaption>
-            <div class="reviews__who">{{ r.who }}</div>
-            <div v-if="r.sample" class="reviews__sample">Sample text, replace with real client reviews</div>
+            <span class="reviews__avatar" aria-hidden="true">{{ initials(r.name) }}</span>
+            <span>
+              <span class="reviews__who">{{ r.name }}</span>
+              <span class="reviews__what">{{ r.treatment }}</span>
+            </span>
           </figcaption>
         </figure>
       </div>
@@ -66,15 +76,23 @@ figure:last-child {
   padding-right: 0;
 }
 
-.reviews__mark {
-  height: 24px;
-  font-family: var(--font-serif);
-  font-size: 56px;
-  line-height: 0.6;
-  color: var(--color-gold);
+.reviews__stars {
+  display: flex;
+  gap: 4px;
+}
+
+.reviews__stars svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--color-gold);
+}
+
+.reviews__stars svg.off {
+  fill: rgba(255, 255, 255, 0.2);
 }
 
 blockquote {
+  flex: 1 1 auto;
   font-family: var(--font-serif);
   font-size: clamp(22px, 2.2vw, 26px);
   font-weight: 400;
@@ -84,16 +102,37 @@ blockquote {
 }
 
 figcaption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.5;
+}
+
+.reviews__avatar {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(168, 137, 95, 0.18);
+  border: 1px solid rgba(201, 177, 142, 0.5);
+  color: var(--color-gold-light);
+  font: 500 15px/1 var(--font-serif);
+  letter-spacing: 0.04em;
 }
 
 .reviews__who {
+  display: block;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--color-gold-light);
+  color: #fff;
 }
 
-.reviews__sample {
+.reviews__what {
+  display: block;
   color: var(--color-on-navy-faint);
 }
 
