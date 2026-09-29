@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { nav } from '#shared/site'
 
-// Full nav from 1200px up; below that a hamburger opens <SiteMobileMenu>. The Book button stays in the header
-// down to 400px (then it lives in the menu only).
+// Sticky 52px translucent nav (handoff §1). The link row shows from 900px; below that a menu button opens
+// <SiteMobileMenu>. The "Book" pill is always visible.
 const open = ref(false)
 const toggle = useTemplateRef<HTMLButtonElement>('toggle')
 function close(returnFocus = true) {
@@ -13,136 +13,127 @@ function close(returnFocus = true) {
 </script>
 
 <template>
-  <header class="site-header">
-    <div class="wrap site-header__bar">
-      <a class="site-header__logo" href="#top" aria-label="MediRefined home">
-        <img src="/images/logo-wordmark.png" alt="MediRefined" width="800" height="215">
-      </a>
+  <nav class="site-nav" aria-label="Main">
+    <div class="wrap site-nav__bar">
+      <a href="#top" class="wordmark site-nav__logo" aria-label="MediRefined home">Medi<span>Refined</span></a>
 
-      <nav class="site-header__nav" aria-label="Main">
+      <div class="site-nav__links">
         <a v-for="l in nav" :key="l.href" :href="l.href">{{ l.label }}</a>
-      </nav>
+      </div>
 
-      <div class="site-header__actions">
-        <a class="btn btn--sm site-header__book" href="#book">Book a consultation</a>
+      <div class="site-nav__actions">
+        <a href="#book" class="pill pill--solid site-nav__book">Book</a>
         <button
           ref="toggle"
           type="button"
-          class="site-header__toggle"
+          class="site-nav__toggle"
           :aria-expanded="open"
           aria-controls="mobile-menu"
           :aria-label="open ? 'Close menu' : 'Open menu'"
           @click="open ? close(false) : (open = true)"
         >
-          <UIcon :name="open ? 'i-lucide-x' : 'i-lucide-menu'" class="size-6" />
+          <UIcon :name="open ? 'i-lucide-x' : 'i-lucide-menu'" class="size-5" />
         </button>
       </div>
     </div>
     <SiteMobileMenu :open="open" @close="close" />
-  </header>
+  </nav>
 </template>
 
 <style scoped>
-.site-header {
+.site-nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(249, 247, 241, 0.9);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--color-gold);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(168, 137, 95, 0.22);
 }
 
-/* Top padding clears the fixed frame lines. */
-.site-header__bar {
+.site-nav__bar {
+  height: var(--nav-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  height: var(--header-h);
-  padding-top: calc(var(--frame-inset) + 4px);
+  gap: 24px;
 }
 
-.site-header__logo {
-  flex: none;
-  display: block;
+.site-nav__logo {
+  font-size: 19px;
 }
 
-.site-header__logo img {
-  display: block;
-  height: 50px;
-  width: auto;
-}
-
-.site-header__nav {
+.site-nav__links {
   display: none;
   align-items: center;
-  gap: clamp(16px, 1.5vw, 22px);
-  font-size: 0.92rem;
-  white-space: nowrap;
+  gap: 26px;
+  font-size: 12.5px;
 }
 
-.site-header__nav a {
-  text-decoration: none;
-  padding-block: 10px;
-  transition: color 0.2s;
+.site-nav__links a {
+  color: var(--color-ink);
+  opacity: 0.8;
+  padding-block: 8px;
+  transition: opacity 0.2s;
 }
 
-.site-header__nav a:hover {
-  color: var(--color-gold-dark);
+.site-nav__links a:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
-.site-header__actions {
+.site-nav__actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-.site-header__book {
-  white-space: nowrap;
+.site-nav__book {
+  position: relative;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
 }
 
-.site-header__toggle {
+/* Small pill, full-size hit area. */
+.site-nav__book::before {
+  content: "";
+  position: absolute;
+  inset: -8px -4px;
+}
+
+/* 36px visual, 44px hit area. */
+.site-nav__toggle {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
-  border: 1.5px solid var(--color-ink);
-  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  margin-right: -6px;
+  border: 0;
+  border-radius: 980px;
   background: transparent;
-  color: var(--color-ink);
-  transition: background-color 0.2s, color 0.2s;
+  color: var(--color-navy);
 }
 
-.site-header__toggle:hover {
-  background: var(--color-ink);
-  color: #fff;
+.site-nav__toggle::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
 }
 
-@media (min-width: 1200px) {
-  .site-header__nav {
+.site-nav__toggle:hover {
+  background: rgba(35, 29, 111, 0.06);
+}
+
+@media (min-width: 900px) {
+  .site-nav__links {
     display: flex;
   }
 
-  .site-header__toggle {
+  .site-nav__toggle {
     display: none;
-  }
-}
-
-@media (max-width: 639px) {
-  .site-header__logo img {
-    height: 42px;
-  }
-}
-
-@media (max-width: 419px) {
-  .site-header__book {
-    display: none;
-  }
-
-  .site-header__logo img {
-    height: 40px;
   }
 }
 </style>

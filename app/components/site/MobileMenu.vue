@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { nav } from '#shared/site'
 
-// Slide-over menu for widths below 1200px. Teleported to <body>: the header's backdrop-filter would otherwise
-// become the containing block of this fixed panel. Esc / backdrop / link click close it; <html> scroll locks.
+// Drop-down menu below the nav for widths under 900px. Teleported to <body>: the nav's backdrop-filter would
+// otherwise become the containing block of this fixed panel. Esc / backdrop / link click close it; <html> scroll locks.
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [returnFocus?: boolean] }>()
 
@@ -37,7 +37,7 @@ watch(() => props.open, (v) => {
 
 // Close if the viewport grows past the breakpoint while open.
 function onResize() {
-  if (props.open && window.innerWidth >= 1200)
+  if (props.open && window.innerWidth >= 900)
     emit('close', false)
 }
 
@@ -62,19 +62,13 @@ onBeforeUnmount(() => {
           class="menu__panel"
           role="dialog"
           aria-modal="true"
-          tabindex="-1"
           aria-label="Menu"
+          tabindex="-1"
         >
-          <div class="menu__top">
-            <img src="/images/logo-wordmark.png" alt="" width="800" height="215" class="menu__logo">
-            <button type="button" class="menu__close" aria-label="Close menu" @click="emit('close')">
-              <UIcon name="i-lucide-x" class="size-6" />
-            </button>
-          </div>
-          <nav aria-label="Mobile">
+          <nav aria-label="Mobile" class="wrap">
             <a v-for="l in nav" :key="l.href" :href="l.href" class="menu__link" @click="emit('close', false)">{{ l.label }}</a>
+            <a href="#book" class="pill pill--solid pill--lg menu__book" @click="emit('close', false)">Book a consultation</a>
           </nav>
-          <a class="btn menu__book" href="#book" @click="emit('close', false)">Book a consultation</a>
         </div>
       </div>
     </Transition>
@@ -84,74 +78,45 @@ onBeforeUnmount(() => {
 <style scoped>
 .menu {
   position: fixed;
-  inset: 0;
-  z-index: 70;
-  background: rgba(16, 15, 58, 0.45);
-  display: flex;
-  justify-content: flex-end;
+  inset: var(--nav-h) 0 0;
+  z-index: 49;
+  background: rgba(21, 18, 63, 0.35);
 }
 
 .menu__panel {
-  width: min(420px, 100%);
-  height: 100%;
+  max-height: 100%;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--color-paper);
-  border-left: 1px solid var(--color-gold);
-  padding: calc(var(--frame-inset) + 18px) calc(var(--gutter) + 4px) 40px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: -30px 0 60px -30px rgba(27, 24, 99, 0.45);
+  background: #fff;
+  border-bottom: 1px solid rgba(168, 137, 95, 0.22);
+  padding: 8px 0 28px;
   outline: none;
-}
-
-.menu__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.menu__logo {
-  height: 42px;
-  width: auto;
-}
-
-.menu__close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  border: 1.5px solid var(--color-ink);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--color-ink);
+  box-shadow: 0 30px 60px -30px rgba(21, 18, 63, 0.4);
 }
 
 .menu__link {
   display: block;
-  padding: 14px 0;
+  padding: 16px 0;
   border-bottom: 1px solid var(--color-line);
   font-family: var(--font-serif);
-  font-size: 1.75rem;
+  font-size: 26px;
+  font-weight: 500;
   line-height: 1.2;
-  color: var(--color-ink);
-  text-decoration: none;
+  color: var(--color-navy);
 }
 
 .menu__link:hover {
-  color: var(--color-gold-dark);
+  color: var(--color-gold);
 }
 
 .menu__book {
-  margin-top: 32px;
-  align-self: stretch;
+  display: flex;
+  margin-top: 24px;
 }
 
 .menu-enter-active,
 .menu-leave-active {
-  transition: opacity 0.22s ease;
+  transition: opacity 0.2s ease;
 }
 
 .menu-enter-active .menu__panel,
@@ -166,6 +131,6 @@ onBeforeUnmount(() => {
 
 .menu-enter-from .menu__panel,
 .menu-leave-to .menu__panel {
-  transform: translateX(100%);
+  transform: translateY(-12px);
 }
 </style>

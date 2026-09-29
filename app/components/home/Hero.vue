@@ -3,78 +3,101 @@ import { hero } from '#shared/site'
 </script>
 
 <template>
-  <div class="hero">
+  <header id="top" class="hero">
     <div class="wrap hero__grid">
-      <div>
-        <h1>{{ hero.title }}</h1>
+      <div class="hero__copy">
+        <p class="hero__eyebrow">{{ hero.eyebrow }}</p>
+        <h1>{{ hero.title }} <em>{{ hero.titleAccent }}</em></h1>
         <p class="hero__lead">{{ hero.lead }}</p>
         <div class="hero__actions">
-          <a class="btn" href="#book">Book a consultation</a>
-          <a class="btn btn--ghost" href="#compare">Compare treatments</a>
+          <a href="#book" class="pill pill--solid pill--lg">Book a consultation</a>
+          <a href="#treatments" class="pill pill--outline pill--lg">Compare treatments</a>
         </div>
       </div>
       <div class="hero__art">
-        <img src="/images/logo-mark.png" alt="MediRefined logo: a line drawing of a face in profile" width="1000" height="626" fetchpriority="high">
+        <img src="/images/medirefined-logo.png" alt="MediRefined" width="1000" height="626" fetchpriority="high">
       </div>
     </div>
-  </div>
+  </header>
 </template>
 
 <style scoped>
+/* White on purpose, to stand out from the cream sections below. */
 .hero {
-  position: relative;
-  padding: clamp(48px, 8vw, 88px) 0 clamp(56px, 9vw, 96px);
+  background: #fff;
+  padding: clamp(64px, 9vw, 120px) 0 clamp(72px, 9vw, 120px);
 }
 
 .hero__grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 56px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(32px, 5vw, 72px);
   align-items: center;
 }
 
+.hero__copy {
+  max-width: 520px;
+}
+
+.hero__eyebrow {
+  margin-bottom: 18px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(44px, 5.6vw, 76px);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--color-navy);
+  text-wrap: balance;
+}
+
+h1 em {
+  color: var(--color-gold);
+}
+
 .hero__lead {
-  font-size: clamp(1.08rem, 1.6vw, 1.2rem);
-  margin: 24px 0 32px;
+  margin-top: 24px;
+  max-width: 500px;
+  font-size: clamp(17px, 1.8vw, 20px);
+  line-height: 1.5;
+  color: var(--color-muted);
+  text-wrap: pretty;
 }
 
 .hero__actions {
+  margin-top: 36px;
   display: flex;
-  gap: 14px;
   flex-wrap: wrap;
+  gap: 14px;
 }
 
 .hero__art {
-  justify-self: center;
-  width: 100%;
-  max-width: 520px;
+  display: flex;
+  justify-content: center;
 }
 
 .hero__art img {
   display: block;
   width: 100%;
+  max-width: 520px;
   height: auto;
 }
 
-@media (max-width: 899px) {
-  .hero__grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .hero__art {
-    max-width: 420px;
-  }
-}
-
-@media (max-width: 639px) {
-  .hero__art {
-    max-width: 320px;
+@media (max-width: 699px) {
+  .hero__art img {
+    max-width: 340px;
   }
 }
 
 @media (max-width: 419px) {
-  .hero__actions .btn {
+  .hero__actions .pill {
     flex: 1 1 100%;
   }
 }

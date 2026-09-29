@@ -4,10 +4,10 @@ import { emptyBooking, isoToday, validateBooking } from '#shared/booking'
 import type { BookingErrors, BookingField } from '#shared/booking'
 
 // Consultation request → POST /api/booking (emails the clinic). Validated here for instant inline errors,
-// and again on the server.
+// and again on the server. On success the form is replaced by the "Request received." state (handoff §9).
 const form = reactive(emptyBooking())
 const errors = ref<BookingErrors>({})
-const state = ref<'idle' | 'sending' | 'ok' | 'error'>('idle')
+const state = ref<'idle' | 'sending' | 'sent' | 'error'>('idle')
 const statusText = ref('')
 const minDate = ref('') // set on mount so SSR and the visitor's clock can't disagree
 // Submit stays disabled until hydrated: a pre-hydration native submit would bypass the API call.
@@ -19,6 +19,7 @@ onMounted(() => {
 })
 
 const formEl = useTemplateRef<HTMLFormElement>('formEl')
+const doneEl = useTemplateRef<HTMLElement>('doneEl')
 
 function focusFirstError() {
   nextTick(() => formEl.value?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus())
@@ -49,8 +50,8 @@ async function submit() {
     })
     if (res?.ok) {
       Object.assign(form, emptyBooking())
-      state.value = 'ok'
-      statusText.value = booking.success
+      state.value = 'sent'
+      nextTick(() => doneEl.value?.focus())
     }
     else if (res?.errors) {
       errors.value = res.errors
@@ -67,138 +68,160 @@ async function submit() {
     statusText.value = booking.error
   }
 }
+
+function again() {
+  errors.value = {}
+  statusText.value = ''
+  state.value = 'idle'
+  nextTick(() => formEl.value?.querySelector<HTMLElement>('input')?.focus())
+}
+
+const ids = { name: 'f-name', email: 'f-email', phone: 'f-phone', treatment: 'f-treat', date: 'f-date', time: 'f-time', message: 'f-msg', consent: 'f-consent' } as const
+const err = (f: BookingField) => (errors.value[f] ? `${ids[f]}-err` : undefined)
 </script>
 
 <template>
-  <section id="book" class="section cta">
-    <div class="wrap cta__grid">
+  <section id="book" class="section book">
+    <div class="wrap book__grid">
       <div>
-        <h2>{{ booking.title }}</h2>
-        <p>{{ booking.intro }}</p>
-        <p class="cta__note">{{ booking.note }}</p>
+        <h2 class="title">{{ booking.title }}</h2>
+        <div class="rule" />
+        <p class="book__intro">{{ booking.intro }}</p>
+        <p class="book__note">{{ booking.note }}</p>
       </div>
 
-      <!-- method="post": even a native (pre-hydration) submit must never put personal data in the URL. -->
-      <form ref="formEl" class="book-form" method="post" novalidate @submit.prevent="submit">
-        <div class="fields">
+      <div class="book__card">
+        <div v-if="state === 'sent'" ref="doneEl" class="book__done" tabindex="-1" role="status">
+          <div class="book__tick" aria-hidden="true">&#10003;</div>
+          <h3>{{ booking.successTitle }}</h3>
+          <p>{{ booking.successBody }}</p>
+          <button type="button" class="book__again" @click="again">{{ booking.again }}</button>
+        </div>
+
+        <!-- method="post": even a native (pre-hydration) submit must never put personal data in the URL. -->
+        <form v-else ref="formEl" class="book__form" method="post" novalidate @submit.prevent="submit">
           <div class="field">
-            <label for="f-name">Full name</label>
-            <input id="f-name" v-model="form.name" name="name" type="text" autocomplete="name" required :aria-invalid="!!errors.name" :aria-describedby="errors.name ? 'e-name' : undefined" @input="clearError('name')">
-            <span v-if="errors.name" id="e-name" class="field__error">{{ errors.name }}</span>
+            <label :for="ids.name">Full name</label>
+            <input :id="ids.name" v-model="form.name" name="name" type="text" autocomplete="name" required :aria-invalid="!!errors.name" :aria-describedby="err('name')" @input="clearError('name')">
+            <span v-if="errors.name" :id="err('name')" class="field__error">{{ errors.name }}</span>
           </div>
           <div class="field">
-            <label for="f-email">Email</label>
-            <input id="f-email" v-model="form.email" name="email" type="email" autocomplete="email" inputmode="email" required :aria-invalid="!!errors.email" :aria-describedby="errors.email ? 'e-email' : undefined" @input="clearError('email')">
-            <span v-if="errors.email" id="e-email" class="field__error">{{ errors.email }}</span>
+            <label :for="ids.email">Email</label>
+            <input :id="ids.email" v-model="form.email" name="email" type="email" autocomplete="email" inputmode="email" required :aria-invalid="!!errors.email" :aria-describedby="err('email')" @input="clearError('email')">
+            <span v-if="errors.email" :id="err('email')" class="field__error">{{ errors.email }}</span>
           </div>
           <div class="field">
-            <label for="f-phone">Phone (optional)</label>
-            <input id="f-phone" v-model="form.phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" :aria-invalid="!!errors.phone" :aria-describedby="errors.phone ? 'e-phone' : undefined" @input="clearError('phone')">
-            <span v-if="errors.phone" id="e-phone" class="field__error">{{ errors.phone }}</span>
+            <label :for="ids.phone">Phone (optional)</label>
+            <input :id="ids.phone" v-model="form.phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" :aria-invalid="!!errors.phone" :aria-describedby="err('phone')" @input="clearError('phone')">
+            <span v-if="errors.phone" :id="err('phone')" class="field__error">{{ errors.phone }}</span>
           </div>
           <div class="field">
-            <label for="f-treat">Treatment</label>
-            <select id="f-treat" v-model="form.treatment" name="treatment" required :aria-invalid="!!errors.treatment" :aria-describedby="errors.treatment ? 'e-treat' : undefined" @change="clearError('treatment')">
+            <label :for="ids.treatment">Treatment</label>
+            <select :id="ids.treatment" v-model="form.treatment" name="treatment" required :aria-invalid="!!errors.treatment" :aria-describedby="err('treatment')" @change="clearError('treatment')">
               <option value="">Choose a treatment</option>
               <option v-for="t in TREATMENTS" :key="t">{{ t }}</option>
             </select>
-            <span v-if="errors.treatment" id="e-treat" class="field__error">{{ errors.treatment }}</span>
+            <span v-if="errors.treatment" :id="err('treatment')" class="field__error">{{ errors.treatment }}</span>
           </div>
           <div class="field">
-            <label for="f-date">Preferred date</label>
-            <input id="f-date" v-model="form.date" name="date" type="date" :min="minDate || undefined" required :aria-invalid="!!errors.date" :aria-describedby="errors.date ? 'e-date' : undefined" @change="clearError('date')">
-            <span v-if="errors.date" id="e-date" class="field__error">{{ errors.date }}</span>
+            <label :for="ids.date">Preferred date</label>
+            <input :id="ids.date" v-model="form.date" name="date" type="date" :min="minDate || undefined" required :aria-invalid="!!errors.date" :aria-describedby="err('date')" @change="clearError('date')">
+            <span v-if="errors.date" :id="err('date')" class="field__error">{{ errors.date }}</span>
           </div>
           <div class="field">
-            <label for="f-time">Preferred time</label>
-            <select id="f-time" v-model="form.time" name="time" required :aria-invalid="!!errors.time" :aria-describedby="errors.time ? 'e-time' : undefined" @change="clearError('time')">
+            <label :for="ids.time">Preferred time</label>
+            <select :id="ids.time" v-model="form.time" name="time" required :aria-invalid="!!errors.time" :aria-describedby="err('time')" @change="clearError('time')">
               <option value="">Choose a time</option>
               <option v-for="t in TIMES" :key="t">{{ t }}</option>
             </select>
-            <span v-if="errors.time" id="e-time" class="field__error">{{ errors.time }}</span>
+            <span v-if="errors.time" :id="err('time')" class="field__error">{{ errors.time }}</span>
           </div>
           <div class="field field--full">
-            <label for="f-msg">Anything you would like us to know (optional)</label>
-            <textarea id="f-msg" v-model="form.message" name="message" maxlength="4000" :aria-invalid="!!errors.message" :aria-describedby="errors.message ? 'e-msg' : undefined" @input="clearError('message')" />
-            <span v-if="errors.message" id="e-msg" class="field__error">{{ errors.message }}</span>
+            <label :for="ids.message">Anything you would like us to know (optional)</label>
+            <textarea :id="ids.message" v-model="form.message" name="message" rows="4" maxlength="4000" :aria-invalid="!!errors.message" :aria-describedby="err('message')" @input="clearError('message')" />
+            <span v-if="errors.message" :id="err('message')" class="field__error">{{ errors.message }}</span>
           </div>
           <!-- Honeypot: hidden from people, bots fill it in. -->
           <div class="hp" aria-hidden="true">
             <label for="f-website">Website</label>
             <input id="f-website" v-model="form.website" name="website" type="text" tabindex="-1" autocomplete="off">
           </div>
-        </div>
-
-        <label class="check">
-          <input v-model="form.consent" type="checkbox" name="consent" required :aria-invalid="!!errors.consent" :aria-describedby="errors.consent ? 'e-consent' : undefined" @change="clearError('consent')">
-          <span>I agree to be contacted about this request.</span>
-        </label>
-        <span v-if="errors.consent" id="e-consent" class="field__error check__error">{{ errors.consent }}</span>
-
-        <button class="btn book-form__submit" type="submit" :disabled="!ready || state === 'sending'">
-          {{ state === 'sending' ? 'Sending…' : 'Request consultation' }}
-        </button>
-        <p class="status" :class="{ 'status--ok': state === 'ok', 'status--err': state === 'error' }" role="status" aria-live="polite">{{ statusText }}</p>
-      </form>
+          <div class="field field--full">
+            <label class="check">
+              <input :id="ids.consent" v-model="form.consent" type="checkbox" name="consent" required :aria-invalid="!!errors.consent" :aria-describedby="err('consent')" @change="clearError('consent')">
+              <span>I agree to be contacted about this request.</span>
+            </label>
+            <span v-if="errors.consent" :id="err('consent')" class="field__error">{{ errors.consent }}</span>
+          </div>
+          <button class="book__submit" type="submit" :disabled="!ready || state === 'sending'">
+            {{ state === 'sending' ? 'Sending…' : 'Request consultation' }}
+          </button>
+          <p v-if="statusText" class="book__status" role="alert">{{ statusText }}</p>
+        </form>
+      </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.cta {
-  background: var(--color-ink);
-  color: #e6e4f2;
-}
-
-.cta h2 {
+.book {
+  background: var(--color-navy);
   color: #fff;
 }
 
-.cta__grid {
+.book__grid {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
   gap: 56px;
   align-items: start;
 }
 
-.cta__grid p {
-  margin-bottom: 18px;
+.book__intro {
+  margin-top: 24px;
+  font-size: clamp(18px, 2vw, 21px);
+  line-height: 1.4;
+  color: var(--color-on-navy-soft);
 }
 
-.cta__note {
-  font-size: 0.92rem;
-  color: var(--color-on-ink-muted);
+.book__note {
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-on-navy-faint);
 }
 
-.book-form {
+.book__card {
   background: #fff;
-  color: var(--color-text);
-  padding: 32px;
-  border-radius: 16px;
+  color: var(--color-ink);
+  border-radius: 28px;
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.5);
+  padding: clamp(28px, 4vw, 44px);
 }
 
-.fields {
+/* Fields: auto-fit 200px columns (1 column in the desktop card, 2–3 on tablet, 1 on phones). */
+.book__form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 14px;
 }
 
 .field {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 6px;
+  align-content: start;
   min-width: 0;
 }
 
-.field--full {
+.field--full,
+.book__submit,
+.book__status {
   grid-column: 1 / -1;
 }
 
 label {
-  font-weight: 600;
-  color: var(--color-ink);
-  font-size: 0.95rem;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-secondary);
 }
 
 input:not([type="checkbox"]),
@@ -206,34 +229,39 @@ select,
 textarea {
   width: 100%;
   min-width: 0;
-  min-height: 48px;
-  font: inherit;
-  font-size: 1rem; /* ≥16px: stops iOS zooming on focus */
-  color: var(--color-text);
-  background: var(--color-paper);
-  border: 1.5px solid var(--color-line);
-  border-radius: 10px;
-  padding: 11px 14px;
-  transition: border-color 0.2s;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font: 400 17px/1.3 var(--font-sans);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 select {
   appearance: none;
-  padding-right: 40px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231B1863' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  padding: 0 40px 0 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23231d6f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
-  background-size: 18px;
+  background-size: 16px;
 }
 
 input[type="date"] {
   appearance: none;
   -webkit-appearance: none;
-  display: block;
+  display: flex;
+  align-items: center;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
 }
 
 textarea {
-  min-height: 110px;
+  height: auto;
+  padding: 12px 14px;
   resize: vertical;
 }
 
@@ -241,18 +269,19 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--color-ink);
-  box-shadow: 0 0 0 3px rgba(27, 24, 99, 0.12);
+  border-color: var(--color-navy);
+  box-shadow: 0 0 0 3px rgba(35, 29, 111, 0.12);
 }
 
 [aria-invalid="true"] {
   border-color: #a3283a !important;
 }
 
-.field__error {
-  font-size: 0.85rem;
-  color: #a3283a;
+.field__error,
+.book__status {
+  font-size: 13px;
   font-weight: 500;
+  color: #a3283a;
 }
 
 .hp {
@@ -265,66 +294,94 @@ textarea:focus {
 
 .check {
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  font-size: 0.95rem;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
   font-weight: 400;
-  color: var(--color-text);
-  margin-bottom: 22px;
+  color: var(--color-secondary);
   cursor: pointer;
+  min-height: 32px;
 }
 
 .check input {
   flex: none;
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
-  accent-color: var(--color-ink);
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-navy);
 }
 
-.check__error {
-  display: block;
-  margin: -14px 0 18px;
+.book__submit {
+  margin-top: 8px;
+  height: 52px;
+  border: 0;
+  border-radius: 980px;
+  background: var(--color-navy);
+  color: #fff;
+  font: 500 17px/1 var(--font-sans);
+  transition: background-color 0.2s;
 }
 
-.book-form__submit {
-  min-width: 220px;
+.book__submit:hover:not(:disabled) {
+  background: var(--color-navy-hover);
 }
 
-.status {
-  margin: 14px 0 0;
+.book__submit:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+/* Success state. */
+.book__done {
+  padding: 48px 0;
+  text-align: center;
+  outline: none;
+}
+
+.book__tick {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+.book__done h3 {
+  margin-top: 20px;
+  font-family: var(--font-serif);
+  font-size: 32px;
   font-weight: 500;
-  min-height: 1.6em;
-  max-width: none;
 }
 
-.status--ok {
-  color: #1d6b4a;
+.book__done p {
+  margin-top: 10px;
+  font-size: 17px;
+  color: var(--color-muted);
 }
 
-.status--err {
-  color: #a3283a;
+.book__again {
+  margin-top: 24px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  background: none;
+  color: var(--color-navy);
+  font: 400 15px var(--font-sans);
 }
 
-@media (max-width: 899px) {
-  .cta__grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
+.book__again:hover {
+  text-decoration: underline;
 }
 
-@media (max-width: 559px) {
-  .fields {
-    grid-template-columns: 1fr;
-  }
-
-  .book-form {
+@media (max-width: 479px) {
+  .book__card {
+    border-radius: 22px;
     padding: 24px 20px;
-    border-radius: 14px;
-  }
-
-  .book-form__submit {
-    width: 100%;
   }
 }
 </style>

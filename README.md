@@ -1,7 +1,7 @@
 # MediRefined website
 
 A one-page site for MediRefined: plain-English information on Botox and dermal fillers, plus a consultation
-booking form. It's a Nuxt 4 rebuild of the static design in `../design-source/index.html` (a clone of
+booking form. The current design (v2) comes from `../design_handoff_medirefined_home/`. v1 was a Nuxt rebuild of the static site in `../design-source/` (a clone of
 github.com/jwjmason1986-del/medirefined).
 
 **Stack:** Nuxt 4, Nuxt UI v4 (Tailwind v4), @nuxtjs/seo, pnpm, and nodemailer. There's no database.

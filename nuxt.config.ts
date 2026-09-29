@@ -1,4 +1,4 @@
-// MediRefined — public website (v1, single page). Rebuilt from the static design in ../design-source/index.html.
+// MediRefined — public website (single page). v2 design: ../design_handoff_medirefined_home (hi-fi handoff).
 // Mirrors the Phuket Dirtbike / Uniplumb setup: Nuxt 4 + Nuxt UI v4 + Tailwind v4 + @nuxtjs/seo, Docker locally,
 // Coolify for production. No database; the booking form emails the clinic over SMTP (server/api/booking.post.ts).
 import { site } from './shared/site'
@@ -72,8 +72,9 @@ export default defineNuxtConfig({
   // Self-hosted Google Fonts via @nuxt/fonts (bundled with Nuxt UI).
   fonts: {
     families: [
-      { name: 'Cormorant Garamond', provider: 'google', weights: [300, 400, 500, 600], styles: ['normal'] },
-      { name: 'Figtree', provider: 'google', weights: [400, 500, 600], styles: ['normal'] },
+      { name: 'Cormorant Garamond', provider: 'google', weights: [300, 400, 500], styles: ['normal', 'italic'] },
+      { name: 'Jost', provider: 'google', weights: [300, 400, 500, 600], styles: ['normal'] },
+      { name: 'Pinyon Script', provider: 'google', weights: [400], styles: ['normal'] },
     ],
   },
 

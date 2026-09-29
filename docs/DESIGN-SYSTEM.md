@@ -1,38 +1,55 @@
-# Design system
+# Design system (v2)
 
-This is ported 1:1 from `../design-source/index.html`: calm, editorial and clinical-luxury, with warm paper, deep
-ink navy and gold hairlines. It's light only.
+**Source of truth:** `../design_handoff_medirefined_home/` (read its `README.md` and `MediRefined Home.dc.html`).
+It's hi-fi, so match it pixel-accurately. The look is navy and gold on alternating white, cream and beige bands,
+with pill buttons and softly rounded cards. It's light only.
 
 ## Tokens (`app/assets/css/main.css` @theme)
 | Token | Value | Use |
 |---|---|---|
-| ink | #1B1863 | headings, primary buttons, Reviews/Book bands |
-| ink-deep | #100F3A | footer |
-| text | #3A3952 | body copy |
-| paper | #F9F7F1 | page ground (plus two soft radial washes and 5% grain) |
-| mist → #E9E1D0 | gradient | Zones band |
-| blush | #EFE6D6 | FAQ band, tags |
-| gold | #B9A487 | frame, h2 rule, hairlines |
-| gold-dark | #8A7550 | button hover, step numerals |
-| line | #E2D9C8 | dividers, input borders |
+| navy | #231d6f | primary actions, navy bands (Reviews, Book, practitioner banner) |
+| navy-hover | #2f2890 | button hover |
+| navy-deep | #15123f | footer |
+| ink | #1f1a4d | headings and body headings |
+| gold | #a8895f | accent italics, rules, numerals, eyebrow |
+| gold-light | #c9b18e | labels on navy |
+| badge / badge-bg | #6b5436 / #f1e7d6 | area badge |
+| muted / secondary / faint | #6b6478 / #4a4468 / #8a8398 | text tiers |
+| on-navy / -soft / -faint | #c8c4e6 / #d6d3ef / #a9a4d0 | text on navy |
+| cream / beige | #faf8f4 / #f1ebe1 | section bands |
+| line | #e2d8c8 | borders |
 
-## Type and components
-- **Type:** Cormorant Garamond (serif) for h1–h3 and quotes; Figtree (sans) for body text at 17px/1.65. The
-  fonts are self-hosted via @nuxt/fonts. `h1` is `clamp(2.75rem, 6.5vw, 5.2rem)` and `h2` is
-  `clamp(2.2rem, 4.4vw, 3.3rem)`, and every h2 has a 56px gold rule under it.
-- **Buttons:** `.btn` is a solid ink pill that turns gold-dark on hover. `.btn--ghost` is outlined, `.btn--light`
-  is white on ink, and `.btn--sm` is the header size. Every button has a minimum tap height of 44–48px.
-- **Content width:** `.wrap` is capped at 1120px, with `--gutter` side padding (24px, or 22px on phones).
-  `.section` has `clamp(64px, 9vw, 96px)` vertical padding.
+Areas uses a gradient band, `#f3ede3 → #e9dfcf`.
 
-## Breakpoints
-| Width | Behaviour |
+**Type:**
+- Cormorant Garamond 300/400/500 plus italic, for headings, numbers, quotes and FAQ questions.
+- Jost 300–600, for body text and UI.
+- Pinyon Script, only for the "Refined" part of the wordmark.
+
+All three are self-hosted via @nuxt/fonts.
+
+**Radii:** 980px for pills, 28px for cards and panels, 22px for tiles and the banner, 12px for inputs.
+
+## Shared classes
+- `.wrap`: max 1080px of content plus 22px gutters. Don't call it `.container`, because Tailwind v4 has a
+  `container` utility that overrides it.
+- `.section`: `clamp(96px, 12vw, 160px)` vertical padding.
+- Title pattern: `.title` (H2) + `.rule` (48×1 gold, 22px below) + `.intro` (20px below). Wrap them in `.is-center`
+  to centre the title.
+- `.pill` with `--solid`, `--outline` and `--lg`. Both variants have a 1px border, so they're the same size.
+- `.wordmark`: renders `Medi<span>Refined</span>`.
+
+## Responsive decisions beyond the handoff
+The handoff's auto-fit grids leave orphans on tablet, so the layouts below are fixed on purpose.
+
+| Area | Behaviour |
 |---|---|
-| ≥ 1200 | full header nav |
-| < 900 | hero, zones and CTA stack into one column; footer uses 2 columns |
-| 640–899 | reviews in 2 columns, the third full width |
-| < 768 | compare and qualifications use 1 column |
-| < 960 / < 520 | steps go 4 → 2 → 1 columns |
-| < 640 | thinner frame, smaller logo, reviews in 1 column |
-| < 560 | form fields in 1 column, full-width submit |
-| < 420 | hero buttons full width; the Book button moves into the menu |
+| Nav | links from 900px up; below that, a menu button opens a drop-down panel. The Book pill is always visible. |
+| Hero | auto-fit with 300px columns (two columns at 768); logo capped at 340px below 700px |
+| Treatments | auto-fit with 420px columns; below 480px the fact rows stack label above value |
+| Areas | 2 columns from 700px up, stacked below. The photo panel is **square** so the % markers stay on the right features. When stacked it's capped at 440px. The markers have a 44px hit area. The segmented control becomes a rounded block below 700px. |
+| Expect | 4 → 2 (below 960) → 1 (below 520) columns |
+| Safety | auto-fit with 320px tiles; the practitioner banner is auto-fit with 220px columns |
+| Reviews | 3 columns; on tablet (640–899) 2 columns plus the third full width; 1 column on phones |
+| Book | auto-fit with 400px columns; fields are auto-fit with 200px columns (2 on desktop, 3 on tablet, 1 on phones) |
+| Footer | 4 → 2 (below 900) → 1 (below 480) columns |

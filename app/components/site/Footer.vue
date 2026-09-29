@@ -9,11 +9,11 @@ const year = new Date().getFullYear()
     <div class="wrap">
       <div class="site-footer__grid">
         <div>
-          <h3>{{ site.name }}</h3>
-          <p>{{ site.tagline }}</p>
+          <div class="wordmark site-footer__mark">Medi<span>Refined</span></div>
+          <p class="site-footer__tag">{{ site.tagline }}</p>
         </div>
         <div>
-          <h4>Contact</h4>
+          <h2>Contact</h2>
           <ul>
             <li>Phone: {{ contact.phone }}</li>
             <li>Email: {{ contact.email }}</li>
@@ -21,13 +21,13 @@ const year = new Date().getFullYear()
           </ul>
         </div>
         <div>
-          <h4>Opening hours</h4>
+          <h2>Opening hours</h2>
           <ul>
             <li v-for="[day, hours] in contact.hours" :key="day">{{ day }}: {{ hours }}</li>
           </ul>
         </div>
         <div>
-          <h4>Follow us</h4>
+          <h2>Follow us</h2>
           <ul>
             <li v-for="[network, handle] in contact.social" :key="network">{{ network }}: {{ handle }}</li>
           </ul>
@@ -40,66 +40,74 @@ const year = new Date().getFullYear()
 
 <style scoped>
 .site-footer {
-  position: relative;
-  background: var(--color-ink-deep);
-  color: var(--color-on-ink-muted);
-  font-size: 0.88rem;
-  /* Bottom padding clears the fixed frame lines. */
-  padding: 44px 0 calc(var(--frame-inset) + 36px);
+  background: var(--color-navy-deep);
+  padding: 56px 0 40px;
+  font-size: 12px;
+  color: var(--color-on-navy-faint);
 }
 
 .site-footer__grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr 1fr;
-  gap: 36px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
   padding-bottom: 28px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid rgba(185, 164, 135, 0.3);
-  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-h3 {
-  font-weight: 300;
-  color: #fff;
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-}
-
-h4 {
-  margin: 0 0 12px;
+.site-footer__mark {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-gold);
+  font-size: 17px;
   font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.site-footer__mark span {
+  letter-spacing: 0;
+}
+
+.site-footer__tag {
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+h2 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+  line-height: 1.9;
 }
 
 ul {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  line-height: 1.9;
 }
 
 li {
-  margin-bottom: 6px;
   overflow-wrap: anywhere;
 }
 
 .site-footer__legal {
-  max-width: 80ch;
+  margin-top: 20px;
+  line-height: 1.6;
 }
 
 @media (max-width: 899px) {
   .site-footer__grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 519px) {
+@media (max-width: 479px) {
   .site-footer__grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 24px;
   }
 }
 </style>

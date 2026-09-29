@@ -1,8 +1,7 @@
 <template>
-  <div class="flex min-h-dvh flex-col">
-    <SiteFrame />
+  <div class="flex min-h-dvh flex-col bg-white">
     <SiteHeader />
-    <main id="top" class="flex-1">
+    <main class="flex-1">
       <slot />
     </main>
     <SiteFooter />

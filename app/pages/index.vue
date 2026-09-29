@@ -7,10 +7,10 @@ usePageSeo({ title: site.title, description: site.description, og: 'home' })
 <template>
   <div>
     <HomeHero />
-    <HomeCompare />
-    <HomeZones />
-    <HomeProcess />
-    <HomeQualifications />
+    <HomeTreatments />
+    <HomeAreas />
+    <HomeExpect />
+    <HomeSafety />
     <HomeReviews />
     <HomeFaq />
     <HomeBookForm />

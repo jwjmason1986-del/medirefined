@@ -9,7 +9,7 @@ const GOLD = '#B9A487'
 
 // Icon: the face-profile line from logo-mark.png (right-hand part of the artwork), on paper, in a gold ring.
 async function icon(size) {
-  const face = await sharp('public/images/logo-mark.png')
+  const face = await sharp('public/images/medirefined-logo.png')
     .extract({ left: 420, top: 200, width: 260, height: 420 })
     .resize({ height: Math.round(size * 0.72), fit: 'inside' })
     .toBuffer()
@@ -30,7 +30,7 @@ await writeFile('public/favicon.ico', Buffer.concat([head, png]))
 
 // OG card 1200×630: paper ground, gold double frame, full logo centred. (No SVG <text>: the container has no
 // fonts, so text would render as boxes.)
-const logo = await sharp('public/images/logo-mark.png').resize({ width: 720 }).toBuffer()
+const logo = await sharp('public/images/medirefined-logo.png').resize({ width: 720 }).toBuffer()
 const card = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
   <rect width="1200" height="630" fill="#F9F7F1"/>
   <rect x="22" y="22" width="1156" height="586" fill="none" stroke="${GOLD}" stroke-width="4"/>

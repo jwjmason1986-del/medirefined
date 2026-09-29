@@ -77,18 +77,18 @@ export function emailLayout(o: { heading: string, intro?: string[], rows?: Array
   const footer = o.footer || 'MediRefined · Botox and dermal filler consultations'
   const table = rows.length
     ? `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:8px 0 20px">${rows.map(([k, v]) =>
-      `<tr><td style="padding:9px 12px 9px 0;border-top:1px solid #e2d9c8;vertical-align:top;width:150px;color:#8a7550;font:600 13px Arial,sans-serif">${esc(k)}</td>`
-      + `<td style="padding:9px 0;border-top:1px solid #e2d9c8;vertical-align:top;color:#3a3952;font:14px/1.55 Arial,sans-serif">${esc(v).replace(/\n/g, '<br>')}</td></tr>`).join('')}</table>`
+      `<tr><td style="padding:9px 12px 9px 0;border-top:1px solid #e2d8c8;vertical-align:top;width:150px;color:#8a7550;font:600 13px Arial,sans-serif">${esc(k)}</td>`
+      + `<td style="padding:9px 0;border-top:1px solid #e2d8c8;vertical-align:top;color:#4a4468;font:14px/1.55 Arial,sans-serif">${esc(v).replace(/\n/g, '<br>')}</td></tr>`).join('')}</table>`
     : ''
-  const html = `<!doctype html><html><body style="margin:0;background:#f9f7f1">`
+  const html = `<!doctype html><html><body style="margin:0;background:#faf8f4">`
     + `<div style="max-width:640px;margin:0 auto;background:#ffffff">`
-    + `<div style="background:#1b1863;padding:20px 24px;border-bottom:3px solid #b9a487;font:400 26px Georgia,serif;color:#ffffff">MediRefined</div>`
+    + `<div style="background:#231d6f;padding:20px 24px;border-bottom:3px solid #a8895f;font:400 26px Georgia,serif;color:#ffffff">MediRefined</div>`
     + `<div style="padding:24px">`
-    + `<h1 style="margin:0 0 14px;font:400 24px Georgia,serif;color:#1b1863">${esc(o.heading)}</h1>`
-    + (o.intro || []).map(p => `<p style="margin:0 0 14px;font:15px/1.6 Arial,sans-serif;color:#3a3952">${esc(p)}</p>`).join('')
+    + `<h1 style="margin:0 0 14px;font:400 24px Georgia,serif;color:#231d6f">${esc(o.heading)}</h1>`
+    + (o.intro || []).map(p => `<p style="margin:0 0 14px;font:15px/1.6 Arial,sans-serif;color:#4a4468">${esc(p)}</p>`).join('')
     + table
     + `</div>`
-    + `<div style="padding:14px 24px;border-top:1px solid #e2d9c8;font:12px Arial,sans-serif;color:#8a7550">${esc(footer)}</div>`
+    + `<div style="padding:14px 24px;border-top:1px solid #e2d8c8;font:12px Arial,sans-serif;color:#8a7550">${esc(footer)}</div>`
     + `</div></body></html>`
   const text = [o.heading, '', ...(o.intro || []).flatMap(p => [p, '']), ...rows.map(([k, v]) => `${k}: ${String(v)}`), '', footer].join('\n')
   return { html, text }

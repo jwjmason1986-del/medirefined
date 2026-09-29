@@ -2,7 +2,7 @@
 import { site } from '#shared/site'
 
 useHead({
-  meta: [{ name: 'theme-color', content: '#f9f7f1' }],
+  meta: [{ name: 'theme-color', content: '#ffffff' }],
 })
 const siteUrl = useSiteConfig().url
 useSeoMeta({
@@ -21,7 +21,7 @@ useSeoMeta({
 
 <template>
   <UApp>
-    <NuxtLoadingIndicator color="#b9a487" />
+    <NuxtLoadingIndicator color="#a8895f" />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
