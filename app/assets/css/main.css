@@ -10,7 +10,8 @@
   --color-navy-hover: #2f2890;
   --color-navy-deep: #15123f; /* footer */
   --color-ink: #1f1a4d; /* headings, body headings */
-  --color-gold: #a8895f; /* accent, rules, numerals */
+  --color-gold: #a8895f; /* accent: rules, numerals, large italics, dots */
+  --color-gold-text: #7c6340; /* small gold TEXT (labels, eyebrows): ≥4.77:1 on white / cream / beige (WCAG AA) */
   --color-gold-light: #c9b18e; /* labels on navy */
   --color-badge: #6b5436;
   --color-badge-bg: #f1e7d6;

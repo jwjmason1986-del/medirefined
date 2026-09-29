@@ -73,6 +73,7 @@ export const areas = {
   title: 'Where each treatment is used.',
   intro: 'Select an area to see what is usually treated there, and with what.',
   image: '/images/face.jpg',
+  imageWebp: '/images/face.webp', // regenerate with scripts/brand-assets.mjs if face.jpg changes
   imageAlt: 'Front-facing portrait with the common treatment areas marked',
   items: [
     {

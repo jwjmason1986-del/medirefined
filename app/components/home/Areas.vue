@@ -29,7 +29,10 @@ const active = ref(0)
 
       <div class="areas__grid">
         <div class="areas__photo">
-          <img :src="areas.image" :alt="areas.imageAlt" width="686" height="686" loading="lazy">
+          <picture>
+            <source type="image/webp" :srcset="areas.imageWebp">
+            <img :src="areas.image" :alt="areas.imageAlt" width="686" height="686" loading="lazy" decoding="async">
+          </picture>
           <!-- Pointer shortcut; the segmented control above is the keyboard / screen-reader path. -->
           <button
             v-for="(a, i) in areas.items"
@@ -267,7 +270,7 @@ h3 {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 .areas__facts dd {

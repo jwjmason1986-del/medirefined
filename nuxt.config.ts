@@ -1,7 +1,13 @@
 // MediRefined — public website (single page). v2 design: ../design_handoff_medirefined_home (hi-fi handoff).
 // Mirrors the Phuket Dirtbike / Uniplumb setup: Nuxt 4 + Nuxt UI v4 + Tailwind v4 + @nuxtjs/seo, Docker locally,
 // Coolify for production. No database; the booking form emails the clinic over SMTP (server/api/booking.post.ts).
-import { site } from './shared/site'
+import { contact, site } from './shared/site'
+
+// Business details only reach the JSON-LD once they are real (not "[Add …]" placeholders). Never invent them.
+const real = (v: string) => (v && !v.startsWith('[Add') ? v : undefined)
+const telephone = real(contact.phone)
+const email = real(contact.email)
+const streetAddress = real(contact.address)
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
@@ -53,10 +59,13 @@ export default defineNuxtConfig({
       type: 'LocalBusiness',
       '@type': ['LocalBusiness', 'MedicalBusiness'],
       name: site.name,
-      url: site.url,
-      logo: `${site.url}/icon-512.png`,
-      image: [`${site.url}/og/home.jpg`],
-      address: { addressCountry: 'GB' },
+      // Root-relative: nuxt-schema-org resolves these against the RUNTIME site URL (NUXT_SITE_URL). Never build them
+      // from site.url, which is baked in at build time.
+      logo: '/icon-512.png',
+      image: '/og/home.jpg',
+      address: { addressCountry: 'GB', ...(streetAddress ? { streetAddress } : {}) },
+      ...(telephone ? { telephone } : {}),
+      ...(email ? { email } : {}),
       knowsAbout: ['Botox', 'Botulinum toxin', 'Dermal fillers', 'Hyaluronic acid fillers', 'Aesthetic consultations'],
     },
   },
@@ -65,7 +74,7 @@ export default defineNuxtConfig({
     url: site.url, // overridden by NUXT_SITE_URL
     name: site.name,
     description: site.description,
-    defaultLocale: 'en',
+    defaultLocale: 'en-GB',
     indexable: false, // noindex until launch — set NUXT_PUBLIC_SITE_INDEXABLE=true (runtime) in Coolify to go live
   },
 

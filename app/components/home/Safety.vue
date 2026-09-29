@@ -93,7 +93,7 @@ import { safety } from '#shared/site'
 .safety__note {
   margin-top: 20px;
   font-size: 12px;
-  color: var(--color-faint);
+  color: var(--color-muted);
 }
 
 @media (max-width: 479px) {

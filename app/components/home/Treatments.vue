@@ -57,7 +57,7 @@ import { treatments } from '#shared/site'
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 h3 {

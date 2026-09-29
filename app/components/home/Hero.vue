@@ -15,7 +15,14 @@ import { hero } from '#shared/site'
         </div>
       </div>
       <div class="hero__art">
-        <img src="/images/medirefined-logo.png" alt="MediRefined" width="1000" height="626" fetchpriority="high">
+        <picture>
+          <source
+            type="image/webp"
+            srcset="/images/medirefined-logo-520.webp 520w, /images/medirefined-logo-1000.webp 1000w"
+            sizes="(min-width: 700px) 520px, 340px"
+          >
+          <img src="/images/medirefined-logo.png" alt="MediRefined" width="1000" height="626" fetchpriority="high">
+        </picture>
       </div>
     </div>
   </header>
@@ -45,7 +52,7 @@ import { hero } from '#shared/site'
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 h1 {
@@ -81,6 +88,10 @@ h1 em {
 .hero__art {
   display: flex;
   justify-content: center;
+}
+
+.hero__art picture {
+  display: contents;
 }
 
 .hero__art img {

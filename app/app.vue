@@ -15,7 +15,7 @@ useSeoMeta({
   ogImageAlt: `${site.name} — Botox and dermal filler consultations`,
   ogImageWidth: 1200,
   ogImageHeight: 630,
-  twitterCard: 'summary_large_image',
+  ogLocale: 'en_GB',
 })
 </script>
 

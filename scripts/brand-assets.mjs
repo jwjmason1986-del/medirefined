@@ -39,3 +39,9 @@ const card = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" h
 </svg>`)
 await sharp(card).flatten({ background: PAPER }).composite([{ input: logo, gravity: 'center' }]).jpeg({ quality: 86 }).toFile('public/og/home.jpg')
 console.log('icons + og card written')
+
+// WebP versions of the page images (served via <picture> with the PNG/JPG as fallback). The hero logo is the LCP.
+for (const w of [520, 1000])
+  await sharp('public/images/medirefined-logo.png').resize({ width: w }).webp({ quality: 82, alphaQuality: 90, effort: 6 }).toFile(`public/images/medirefined-logo-${w}.webp`)
+await sharp('public/images/face.jpg').webp({ quality: 78, effort: 6 }).toFile('public/images/face.webp')
+console.log('webp images written')
