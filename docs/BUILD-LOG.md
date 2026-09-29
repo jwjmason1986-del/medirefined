@@ -1,5 +1,11 @@
 # Build log
 
+## 2026-09-30: WhatsApp button
+- Added a floating WhatsApp button (`SiteWhatsAppFab`, ported from Phuket Dirtbike): a WhatsApp-green circle with a
+  navy "Chat on WhatsApp" hover label on desktop. It opens a chat with a pre-filled message. The footer gets extra
+  bottom padding on phones so its last line clears the button.
+- ⚠️ The number is a DUMMY (`whatsapp.number = '123456789'` in `shared/site.ts`) until JD supplies the real one.
+
 ## 2026-09-30: fuller area cards, realistic sample reviews, footer wordmark
 - **Area cards:** the second paragraphs are longer and the badge spacer is gone.
   - Side by side (1000px and up), the Results / Lasts row is pinned to the card bottom, so any slack sits above it
@@ -73,6 +79,7 @@
 - [ ] Practitioner name, profession/registration number and qualifications (`safety.practitioner`)
 - [ ] **Launch blocker:** real client reviews, with consent. Replace the samples and set `sample: false`; until then the Reviews section auto-hides on the live site
 - [ ] Contact phone, email, address, opening hours and socials (`contact`)
+- [ ] Real WhatsApp number (`whatsapp.number`: international format, digits only, e.g. 447700900123)
 - [ ] The clinic's SMTP credentials and notification address
 - [ ] Production domain (`site.url`, `NUXT_SITE_URL`), Coolify deploy, DNS
 - [ ] Go indexable (`NUXT_PUBLIC_SITE_INDEXABLE=true`) once the placeholders are filled

@@ -11,6 +11,16 @@ export const site = {
   tagline: 'Botox and dermal filler consultations.',
 }
 
+// Floating WhatsApp button (SiteWhatsAppFab). ⚠️ DUMMY number: JD will supply the real one.
+// wa.me needs the full international number, digits only (UK mobile 07700 900123 → '447700900123').
+export const whatsapp = {
+  number: '123456789',
+  message: 'Hi MediRefined, I would like to ask about a consultation.',
+  get url() {
+    return `https://wa.me/${this.number}?text=${encodeURIComponent(this.message)}`
+  },
+}
+
 export const nav = [
   { label: 'Treatments', href: '#treatments' },
   { label: 'Areas', href: '#areas' },

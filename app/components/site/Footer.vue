@@ -92,6 +92,13 @@ li {
   line-height: 1.6;
 }
 
+/* Phones: keep the last line clear of the floating WhatsApp button. */
+@media (max-width: 767px) {
+  .site-footer {
+    padding-bottom: 96px;
+  }
+}
+
 @media (max-width: 899px) {
   .site-footer__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
