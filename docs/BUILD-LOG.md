@@ -1,5 +1,14 @@
 # Build log
 
+## 2026-09-30: fuller area cards
+- Each area card now has two paragraphs plus a Results / Lasts fact row, balanced so every area reads 3 + 3 lines at
+  desktop. All five entries share one grid cell, so the card height never changes when you switch.
+- A trial of stock close-ups and zoomed portrait crops inside the card was removed at JD's request.
+- **Fixes:**
+  - The square photo panel no longer stretches past its column at tablet widths.
+  - The area grid stacks below 1000px.
+- The new paragraphs and fact values need clinical review (listed with the FAQs).
+
 ## 2026-09-30: favicon on navy
 - The app icons (favicon, apple-touch and 192/512) are now the gold face-profile line on a navy #231d6f tile with a fine gold ring, cropped so no script-letter fragments show. The cache version was bumped to `?v=2`.
 
@@ -54,5 +63,5 @@
 - [ ] Production domain (`site.url`, `NUXT_SITE_URL`), Coolify deploy, DNS
 - [ ] Go indexable (`NUXT_PUBLIC_SITE_INDEXABLE=true`) once the placeholders are filled
 - [ ] Client portrait for the area map (then re-tune `areas.items` x/y)
-- [ ] Clinical review of the FAQ answers (written for the prototype)
+- [ ] Clinical review of the FAQ answers (written for the prototype) and of the area card paragraphs and Results / Lasts facts
 - [ ] Decide whether this app should be pushed to the owner's GitHub repo (it currently has no remote)

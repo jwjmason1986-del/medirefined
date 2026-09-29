@@ -3,7 +3,6 @@ import { areas } from '#shared/site'
 
 // Interactive treatment map (handoff §4): the segmented control and the photo markers select the same area.
 const active = ref(0)
-const current = computed(() => areas.items[active.value]!)
 </script>
 
 <template>
@@ -45,10 +44,28 @@ const current = computed(() => areas.items[active.value]!)
           />
         </div>
 
-        <div class="areas__card" aria-live="polite">
-          <span class="areas__badge">{{ current.treatment }}</span>
-          <h3>{{ current.label }}</h3>
-          <p>{{ current.desc }}</p>
+        <div class="areas__card">
+          <!-- All five texts share one grid cell (only the active one visible), so the card is always the height of
+               the longest and never jumps when switching areas. -->
+          <div class="areas__text" aria-live="polite">
+            <div
+              v-for="(a, i) in areas.items"
+              :key="a.label"
+              class="areas__entry"
+              :class="{ on: i === active }"
+              :aria-hidden="i !== active"
+            >
+              <span class="areas__badge">{{ a.treatment }}</span>
+              <h3>{{ a.label }}</h3>
+              <p v-for="(para, j) in a.desc" :key="j">{{ para }}</p>
+              <dl class="areas__facts">
+                <div v-for="[term, value] in a.facts" :key="term">
+                  <dt>{{ term }}</dt>
+                  <dd>{{ value }}</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -105,6 +122,8 @@ const current = computed(() => areas.items[active.value]!)
 /* Square panel so the markers (placed by %) stay on the right features at every width. */
 .areas__photo {
   position: relative;
+  align-self: start; /* never stretch: a stretched height would widen the square past its column */
+  width: 100%;
   aspect-ratio: 1;
   border-radius: 28px;
   overflow: hidden;
@@ -162,8 +181,26 @@ const current = computed(() => areas.items[active.value]!)
   box-shadow: 0 24px 50px -30px rgba(80, 60, 30, 0.3);
 }
 
+/* Entries stretch to the card's height (set by the square photo): badge at the top, text at the bottom. */
+.areas__text {
+  flex: 1 1 auto;
+  display: grid;
+}
+
+.areas__entry {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+}
+
+.areas__entry.on {
+  visibility: visible;
+}
+
 .areas__badge {
   align-self: flex-start;
+  margin-bottom: auto;
   padding: 5px 11px;
   border-radius: 980px;
   background: var(--color-badge-bg);
@@ -175,7 +212,7 @@ const current = computed(() => areas.items[active.value]!)
 }
 
 h3 {
-  margin-top: 20px;
+  margin-top: 28px;
   font-family: var(--font-serif);
   font-size: clamp(32px, 4vw, 44px);
   font-weight: 500;
@@ -185,14 +222,50 @@ h3 {
 
 .areas__card p {
   margin-top: 16px;
+  max-width: 44ch;
   font-size: 19px;
   line-height: 1.5;
   color: var(--color-muted);
   text-wrap: pretty;
 }
 
-/* Phones: stack, photo capped, control becomes a rounded block with finger-sized options. */
-@media (max-width: 699px) {
+.areas__facts {
+  margin: 24px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-line);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.areas__facts dt {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.areas__facts dd {
+  margin: 4px 0 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--color-ink);
+}
+
+/* Small laptops: slightly smaller text so the card matches the square photo's height. */
+@media (min-width: 1000px) and (max-width: 1199px) {
+  .areas__card p {
+    font-size: 17px;
+  }
+
+  .areas__facts dd {
+    font-size: 14px;
+  }
+}
+
+/* Tablets and phones: stack, photo capped and centred above a full-width card. */
+@media (max-width: 999px) {
   .areas__grid {
     grid-template-columns: 1fr;
     gap: 28px;
@@ -211,8 +284,20 @@ h3 {
 
   .areas__card p {
     font-size: 17px;
+    max-width: 60ch;
   }
 
+  .areas__badge {
+    margin-bottom: 0;
+  }
+
+  .areas__entry {
+    justify-content: flex-start;
+  }
+}
+
+/* Phones: segmented control becomes a rounded block with finger-sized options. */
+@media (max-width: 699px) {
   .areas__seg {
     border-radius: 24px;
   }
@@ -220,6 +305,10 @@ h3 {
   .areas__seg button {
     min-height: 44px;
     padding: 10px 16px;
+  }
+
+  .areas__facts dd {
+    font-size: 14px;
   }
 }
 </style>

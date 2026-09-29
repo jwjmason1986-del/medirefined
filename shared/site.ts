@@ -57,17 +57,54 @@ export const treatments = {
 
 // x/y = marker centre as % of the square portrait (public/images/face.jpg). The handoff's coordinates were for a
 // portrait not yet supplied; these are tuned to face.jpg. Re-tune if the photo changes.
+// desc = the detail card's paragraphs, kept to similar lengths so every card reads the same. The second paragraphs
+// and the Results / Lasts facts were written for the site and need clinical review before launch, like the FAQs.
 export const areas = {
   title: 'Where each treatment is used.',
   intro: 'Select an area to see what is usually treated there, and with what.',
   image: '/images/face.jpg',
   imageAlt: 'Front-facing portrait with the common treatment areas marked',
   items: [
-    { label: 'Forehead and frown lines', treatment: 'Botox', x: 50, y: 31, desc: 'Botox relaxes the muscles that crease the forehead and the space between the brows, softening lines that show when you frown or raise your eyebrows.' },
-    { label: 'Crow\'s feet', treatment: 'Botox', x: 66, y: 46, desc: 'Small amounts of Botox at the outer corners of the eyes soften the fine lines that appear when you smile or squint.' },
-    { label: 'Cheeks', treatment: 'Dermal fillers', x: 36, y: 56, desc: 'Hyaluronic acid filler restores volume in the mid-face, lifting and supporting the cheeks for a fresher, natural shape.' },
-    { label: 'Lips', treatment: 'Dermal fillers', x: 50, y: 67, desc: 'Filler can add subtle volume, define the lip border and improve symmetry. The aim is balance, not size.' },
-    { label: 'Chin and jawline', treatment: 'Dermal fillers', x: 57, y: 76, desc: 'Filler along the chin and jaw adds structure and definition, improving the profile and the line from ear to chin.' },
+    {
+      label: 'Forehead and frown lines', treatment: 'Botox', x: 50, y: 31,
+      desc: [
+        'Botox relaxes the muscles that crease the forehead and the space between the brows, softening frown and forehead lines.',
+        'Doses are kept conservative, so you can still raise your brows and look expressive, just less tired. It pairs well with crow\'s feet.',
+      ],
+      facts: [['Results', '3 to 7 days, settling at 2 weeks'], ['Lasts', 'Typically 3 to 4 months']],
+    },
+    {
+      label: 'Crow\'s feet', treatment: 'Botox', x: 66, y: 46,
+      desc: [
+        'Small amounts of Botox at the outer corners of the eyes soften the fine lines that appear when you smile, laugh or squint.',
+        'The aim is a smoother, more rested look while your smile stays warm and natural. This area is often treated alongside frown lines.',
+      ],
+      facts: [['Results', '3 to 7 days, settling at 2 weeks'], ['Lasts', 'Typically 3 to 4 months']],
+    },
+    {
+      label: 'Cheeks', treatment: 'Dermal fillers', x: 36, y: 56,
+      desc: [
+        'Hyaluronic acid filler restores volume in the mid-face, lifting and supporting the cheeks for a fresher, natural shape.',
+        'Support here can also soften the folds beside the nose and mouth, so a little volume in the cheeks can refresh the whole face.',
+      ],
+      facts: [['Results', 'Immediately, settling over a few days'], ['Lasts', 'Often 12 months or more']],
+    },
+    {
+      label: 'Lips', treatment: 'Dermal fillers', x: 50, y: 67,
+      desc: [
+        'Filler can add subtle volume, define the lip border and improve symmetry. The aim is a natural balance, never extra size.',
+        'Small amounts are placed carefully and built up gradually. Lips may look swollen for a few days, and filler can be dissolved if needed.',
+      ],
+      facts: [['Results', 'Immediately, settling over a few days'], ['Lasts', 'Around 6 to 12 months']],
+    },
+    {
+      label: 'Chin and jawline', treatment: 'Dermal fillers', x: 57, y: 76,
+      desc: [
+        'Filler along the chin and jaw gently adds structure and definition, improving the profile and the line from ear to chin.',
+        'It can bring the lower face into better proportion without surgery, balancing a softer chin or a less defined jawline.',
+      ],
+      facts: [['Results', 'Immediately, settling over a few days'], ['Lasts', 'Often 12 months or more']],
+    },
   ],
 }
 

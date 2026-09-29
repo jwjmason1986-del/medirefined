@@ -47,7 +47,7 @@ The handoff's auto-fit grids leave orphans on tablet, so the layouts below are f
 | Nav | links from 900px up; below that, a menu button opens a drop-down panel. The Book pill is always visible. |
 | Hero | auto-fit with 300px columns (two columns at 768); logo capped at 340px below 700px |
 | Treatments | auto-fit with 420px columns; below 480px the fact rows stack label above value |
-| Areas | 2 columns from 700px up, stacked below. The photo panel is **square** so the % markers stay on the right features. When stacked it's capped at 440px. The markers have a 44px hit area. The segmented control becomes a rounded block below 700px. |
+| Areas | 2 columns from 1000px up, stacked below (photo centred and capped at 440px, card full width). The photo panel is **square** (`align-self: start`, so it never stretches wider than its column), which keeps the % markers on the right features. The detail card stacks all five entries in one grid cell so its height never jumps: badge at the top, then title, 2 paragraphs and a Results / Lasts fact row at the bottom. Text is 17px between 1000 and 1199px so the card matches the photo's height. The markers have a 44px hit area. The segmented control becomes a rounded block below 700px. |
 | Expect | 4 → 2 (below 960) → 1 (below 520) columns |
 | Safety | auto-fit with 320px tiles; the practitioner banner is auto-fit with 220px columns |
 | Reviews | 3 columns; on tablet (640–899) 2 columns plus the third full width; 1 column on phones |
