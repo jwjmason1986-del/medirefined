@@ -1,5 +1,8 @@
 # Build log
 
+## 2026-09-30: active marker pulse
+- The selected area marker now has a soft pulsing ring: it expands from the halo to 2.6× and fades, on a 2s loop. It's off under prefers-reduced-motion, which leaves the static halo.
+
 ## 2026-09-30: WhatsApp button
 - Added a floating WhatsApp button (`SiteWhatsAppFab`, ported from Phuket Dirtbike): a WhatsApp-green circle with a
   navy "Chat on WhatsApp" hover label on desktop. It opens a chat with a pre-filled message. The footer gets extra

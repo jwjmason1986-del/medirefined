@@ -169,6 +169,31 @@ const active = ref(0)
   box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.22);
 }
 
+/* Active marker: a soft ring that breathes out from the halo and fades (off under prefers-reduced-motion). */
+.areas__marker.on::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  animation: marker-pulse 2s ease-out infinite;
+}
+
+@keyframes marker-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
 .areas__card {
   background: #fff;
   border-left: 3px solid var(--color-gold);
