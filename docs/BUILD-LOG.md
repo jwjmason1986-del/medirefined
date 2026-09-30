@@ -1,5 +1,8 @@
 # Build log
 
+## 2026-09-30: mobile hero order
+- On phones (below 700px) the hero shows the logo first, capped at 300px, with the text below it and a tighter top padding. It's forced to one column so the reorder never produces a logo-left two-column layout. Tablet and desktop are unchanged.
+
 ## 2026-09-30: published to GitHub + Pages build
 - The app now replaces the static site on `main` of github.com/jwjmason1986-del/medirefined. The old static-site
   history is kept via a `-s ours` merge, not a force-push.

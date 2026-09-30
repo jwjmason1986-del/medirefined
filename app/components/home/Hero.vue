@@ -101,9 +101,23 @@ h1 em {
   height: auto;
 }
 
+/* Phones (stacked): logo first, text below. */
 @media (max-width: 699px) {
+  .hero {
+    padding-top: 40px;
+  }
+
+  .hero__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .hero__art {
+    order: -1;
+  }
+
   .hero__art img {
-    max-width: 340px;
+    max-width: 300px;
   }
 }
 
