@@ -102,9 +102,9 @@ export default defineNuxtConfig({
       // Declared here (not in app.vue) so nuxt-seo-utils doesn't also inject un-versioned copies.
       // Bump ?v= whenever the icon changes — browsers cache favicons hard.
       link: [
-        { rel: 'icon', type: 'image/png', sizes: '48x48', href: `${base}favicon-48.png?v=2` },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: `${base}apple-touch-icon.png?v=2` },
-        { rel: 'manifest', href: `${base}site.webmanifest?v=2` },
+        { rel: 'icon', type: 'image/png', sizes: '48x48', href: `${base}favicon-48.png?v=3` },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: `${base}apple-touch-icon.png?v=3` },
+        { rel: 'manifest', href: `${base}site.webmanifest?v=3` },
       ],
     },
   },

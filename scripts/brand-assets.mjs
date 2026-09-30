@@ -6,16 +6,41 @@ import sharp from 'sharp'
 
 const PAPER = { r: 249, g: 247, b: 241, alpha: 1 }
 const GOLD = '#A8895F'
-const NAVY = '#231D6F'
 
-// Icon: the face-profile line from the logo (right-hand part of the artwork), gold on a navy tile with a fine gold ring.
-async function icon(size) {
-  const face = await sharp('public/images/medirefined-logo.png')
-    .extract({ left: 440, top: 276, width: 220, height: 336 })
-    .resize({ height: Math.round(size * 0.72), fit: 'inside' })
+// Icon: "MR" monogram cut straight from the logo artwork (navy serif "M" from "Medi", gold script "R" from
+// "Refined", at the logo's own proportions) on white. Coordinates are in medirefined-logo.png (1000×626).
+const LOGO = 'public/images/medirefined-logo.png'
+async function monogram() {
+  const M = await sharp(LOGO).extract({ left: 10, top: 103, width: 116, height: 96 }).toBuffer()
+  // The script R is joined to the "e"; clear the e's zone (right of the R, below its bowl).
+  const W = 152
+  const H = 270
+  const { data } = await sharp(LOGO).extract({ left: 300, top: 8, width: W, height: H }).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      if ((x >= 136 && y >= 80 && y < 215) || (x >= 146 && y >= 80))
+        data[(y * W + x) * 4 + 3] = 0
+    }
+  }
+  const R = await sharp(data, { raw: { width: W, height: H, channels: 4 } }).png().toBuffer()
+  const gapX = 104 // R tucked in beside the M; M sits 95px below the R's top, as in the logo
+  return sharp({ create: { width: gapX + W, height: H, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+    .composite([{ input: M, left: 0, top: 95 }, { input: R, left: gapX, top: 0 }])
+    .png()
     .toBuffer()
-  const ring = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><rect width="100%" height="100%" rx="${size * 0.22}" fill="${NAVY}"/><rect x="${size * 0.05}" y="${size * 0.05}" width="${size * 0.9}" height="${size * 0.9}" rx="${size * 0.18}" fill="none" stroke="${GOLD}" stroke-width="${Math.max(1.5, size * 0.03)}"/></svg>`)
-  return sharp(ring).composite([{ input: face, gravity: 'center' }]).png().toBuffer()
+}
+const mono = await monogram()
+
+async function icon(size) {
+  const pad = size <= 64 ? 0.03 : 0.1 // small favicons: letters fill more of the square
+  const inner = Math.round(size * (1 - 2 * pad))
+  let m = sharp(mono).resize({ width: inner, height: inner, fit: 'inside' })
+  if (size <= 64)
+    m = m.sharpen()
+  return sharp({ create: { width: size, height: size, channels: 4, background: '#ffffff' } })
+    .composite([{ input: await m.toBuffer(), gravity: 'center' }])
+    .png()
+    .toBuffer()
 }
 
 for (const [file, size] of [['favicon-48.png', 48], ['apple-touch-icon.png', 180], ['icon-192.png', 192], ['icon-512.png', 512]])

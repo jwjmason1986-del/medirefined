@@ -1,5 +1,8 @@
 # Build log
 
+## 2026-09-30: MR monogram favicon
+- The icons (favicon, apple-touch, 192/512 and .ico) are now an "MR" monogram cut directly from the logo artwork: the navy serif "M" from "Medi" and the gold script "R" from "Refined", at the logo's own proportions, on white. Built in `scripts/brand-assets.mjs`, which masks out the "e" joined to the R. Small sizes get tighter padding and a light sharpen. The cache version was bumped to `?v=3`.
+
 ## 2026-09-30: mobile hero order
 - On phones (below 700px) the hero shows the logo first, capped at 300px, with the text below it and a tighter top padding. It's forced to one column so the reorder never produces a logo-left two-column layout. Tablet and desktop are unchanged.
 
